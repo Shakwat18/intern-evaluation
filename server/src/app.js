@@ -66,7 +66,7 @@ app.post('/api/auth/register',async(req,res)=>{
     }
  hashpass=bcrypt.hashSync(password,genSaltSync(10),process.env)
 
-  const queryText = 'INSERT INTO users(email, password, username) VALUES(\$1, \$2, \$3) RETURNING id, email';
+  const queryText = 'INSERT INTO users(email, password, name) VALUES(\$1, \$2, \$3) RETURNING id, email';
     const values = [email, hashpass, name];
     
  await db.query(queryText, values);

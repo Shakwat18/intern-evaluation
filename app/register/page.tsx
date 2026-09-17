@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -96,16 +97,10 @@ const payload={
   email: form.email,
   password: form.password
 }
-    const res= await fetch('http://localhost:3001/api/auth/register',{
-    method: 'POST',
-headers:{
-  'content-type':'application/json'
-},
-body:JSON.stringify(payload)
+    const res= await axios.post('http://localhost:3001/api/auth/register',payload)
+    // const res= await axios.post('https://smart-global-it.vercel.app/api/auth/register',payload)
 
-    })
-
-    const data = await res.json()
+   const data = res.data
     console.log("Registration data:", data);
 router.push('/login')
     setSubmitted(true);

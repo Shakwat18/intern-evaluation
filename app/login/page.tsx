@@ -1,9 +1,12 @@
 "use client";
 
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function LoginForm() {
+  const router= useRouter()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -14,17 +17,12 @@ const payload={
   email: email,
   password: password
 }
-    const res= await fetch('http://localhost:3001/api/auth/login',{
-    method: 'POST',
-headers:{
-  'content-type':'application/json'
-},
-body:JSON.stringify(payload)
-
-    })
-
-    const data = await res.json()
-
+    const res= await axios.post('http://localhost:3001/api/auth/login',payload)
+    // const res= await axios.post('https://smart-global-it.vercel.app/api/auth/login',payload)
+    const data= res.data
+    if(data.success){
+      router.push('/success')
+    }
     setPassword('')
     setEmail('')
     console.log(data);

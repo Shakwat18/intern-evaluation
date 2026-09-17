@@ -1,14 +1,15 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
-// Initialize the database connection pool using the string from your .env file
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DATABASE,
+  password: process.env.POSTGRES_PASSWORD,
   ssl: {
-    rejectUnauthorized: false, // Required for Neon secure SSL connections
-  },
+    rejectUnauthorized: true 
+  }
 });
-
 // A helper function to execute database queries cleanly across controllers
 module.exports = {
   query: (text, params) => pool.query(text, params),
