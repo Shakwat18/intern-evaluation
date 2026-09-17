@@ -6,38 +6,40 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function LoginForm() {
-  const router= useRouter()
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit =async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-const payload={
-  email: email,
-  password: password
-}
-    const res= await axios.post('http://localhost:3001/api/auth/login',payload)
+    const payload = {
+      email: email,
+      password: password,
+    };
+    const res = await axios.post(
+      "http://localhost:3001/api/auth/login",
+      payload,
+    );
     // const res= await axios.post('https://smart-global-it.vercel.app/api/auth/login',payload)
-    const data= res.data
-    if(data.success){
-      router.push('/success')
+    const data = res.data;
+    if (data.success) {
+      router.push("/success");
+      setPassword("");
+      setEmail("");
+      console.log(data);
+    } else {
+      router.push("/login");
     }
-    setPassword('')
-    setEmail('')
-    console.log(data);
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-950 px-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-gray-800 bg-gray-900 p-8 shadow-2xl">
-
           {/* Heading */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white">
-              Welcome Back
-            </h1>
+            <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
 
             <p className="mt-2 text-sm text-gray-400">
               Sign in to your account
@@ -45,7 +47,6 @@ const payload={
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-
             {/* Email */}
             <div>
               <label
@@ -107,7 +108,6 @@ const payload={
               </div>
             </div>
 
-          
             {/* Submit */}
             <button
               type="submit"
@@ -121,7 +121,7 @@ const payload={
           <p className="mt-6 text-center text-sm text-gray-400">
             Don't have an account?{" "}
             <Link
-             href={'/register'}
+              href={"/register"}
               className="font-medium text-indigo-400 hover:text-indigo-300"
             >
               Create account
