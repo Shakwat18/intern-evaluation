@@ -8,13 +8,26 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit =async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+const payload={
+  email: email,
+  password: password
+}
+    const res= await fetch('http://localhost:3001/api/auth/login',{
+    method: 'POST',
+headers:{
+  'content-type':'application/json'
+},
+body:JSON.stringify(payload)
 
-    console.log({
-      email,
-      password,
-    });
+    })
+
+    const data = await res.json()
+
+    setPassword('')
+    setEmail('')
+    console.log(data);
   };
 
   return (

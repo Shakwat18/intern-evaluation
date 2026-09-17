@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 type FormData = {
@@ -19,6 +20,8 @@ export default function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
+
+  const router=useRouter()
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -78,7 +81,7 @@ export default function RegisterForm() {
     setErrors(validationErrors);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const validationErrors = validate(form);
@@ -88,10 +91,23 @@ export default function RegisterForm() {
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
+const payload={
+  name: form.name,
+  email: form.email,
+  password: form.password
+}
+    const res= await fetch('http://localhost:3001/api/auth/register',{
+    method: 'POST',
+headers:{
+  'content-type':'application/json'
+},
+body:JSON.stringify(payload)
 
-    // Send data to your API here
-    console.log("Registration data:", form);
+    })
 
+    const data = await res.json()
+    console.log("Registration data:", data);
+router.push('/login')
     setSubmitted(true);
   };
 
